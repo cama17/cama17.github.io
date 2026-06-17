@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Craig M — IAM & Cloud Security Professional</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:        #0a0e17;
+      --surface:   #111827;
+      --border:    #1e2d45;
+      --accent:    #FF9933;
+      --accent2:   #138808;
+      --text:      #e2e8f0;
+      --muted:     #64748b;
+      --tag-bg:    #3d1f00;
+      --tag-text:  #FFB366;
+      --cert-gold: #FF9933;
+      --inprog:    #138808;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; font-size: 15px; line-height: 1.7; min-height: 100vh; }
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; height: 56px; background: rgba(10,14,23,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+    .nav-logo { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.1rem; color: var(--text); text-decoration: none; letter-spacing: -0.02em; }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--text); }
+    .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 5rem 2rem 4rem; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 50% at 70% 40%, rgba(255,153,51,0.06) 0%, transparent 70%), radial-gradient(ellipse 40% 60% at 20% 70%, rgba(19,136,8,0.04) 0%, transparent 70%); pointer-events: none; }
+    .hero-grid { position: absolute; inset: 0; pointer-events: none; opacity: 0.03; background-image: linear-gradient(var(--accent) 1px, transparent 1px), linear-gradient(90deg, var(--accent) 1px, transparent 1px); background-size: 48px 48px; }
+    .hero-inner { max-width: 780px; width: 100%; position: relative; z-index: 1; }
+    .avatar-wrap { width: 130px; height: 130px; border-radius: 50%; border: 2px solid var(--border); overflow: hidden; margin-bottom: 1.75rem; background: var(--surface); display: flex; align-items: center; justify-content: center; }
+    .avatar-wrap img { width: 100%; height: 100%; object-fit: cover; }
+    .hero h1 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.03em; color: var(--text); margin-bottom: 0.5rem; }
+    .hero h1 span { color: var(--accent); }
+    .hero-title { font-size: 0.9rem; font-weight: 500; color: var(--muted); margin-bottom: 1.5rem; letter-spacing: 0.02em; }
+    .hero-desc { font-size: 1.05rem; color: #94a3b8; max-width: 560px; margin-bottom: 2.5rem; line-height: 1.75; }
+    .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.65rem 1.4rem; border-radius: 6px; font-size: 0.875rem; font-weight: 600; text-decoration: none; transition: all 0.2s; cursor: pointer; border: none; }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+    .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--text); }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+    .status-pill { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.75rem; background: rgba(19,136,8,0.1); border: 1px solid rgba(19,136,8,0.25); border-radius: 99px; font-size: 0.75rem; color: var(--inprog); font-weight: 500; margin-bottom: 2rem; }
+    .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--inprog); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+    section { padding: 5rem 2rem; }
+    .section-inner { max-width: 900px; margin: 0 auto; }
+    .section-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; }
+    .section-title { font-family: 'Space Grotesk', sans-serif; font-size: clamp(1.6rem, 3vw, 2.1rem); font-weight: 700; letter-spacing: -0.02em; color: var(--text); margin-bottom: 0.75rem; }
+    .section-sub { color: var(--muted); font-size: 0.95rem; max-width: 540px; margin-bottom: 3rem; }
+    hr.divider { border: none; border-top: 1px solid var(--border); margin: 0; }
+    #certifications { background: var(--surface); }
+    .cert-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.25rem; }
+    .cert-card { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; display: flex; flex-direction: column; gap: 0.75rem; transition: border-color 0.2s, transform 0.2s; position: relative; overflow: hidden; }
+    .cert-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .cert-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; }
+    .cert-card.gold::before { background: var(--cert-gold); }
+    .cert-card.blue::before { background: var(--accent); }
+    .cert-card.cyan::before { background: var(--accent2); }
+    .cert-card.green::before { background: var(--inprog); }
+    .cert-issuer { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+    .cert-name { font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 600; color: var(--text); line-height: 1.3; }
+    .cert-meta { font-size: 0.78rem; color: var(--muted); }
+    .cert-badge { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.72rem; font-weight: 600; padding: 0.2rem 0.6rem; border-radius: 4px; width: fit-content; }
+    .cert-badge.earned { background: rgba(19,136,8,0.1); color: var(--inprog); }
+    .cert-badge.inprog { background: rgba(255,153,51,0.1); color: var(--accent); }
+    .project-list { display: flex; flex-direction: column; gap: 1.5rem; }
+    .project-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1.75rem; display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: start; transition: border-color 0.2s; }
+    .project-card:hover { border-color: var(--accent); }
+    .project-num { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; color: var(--accent); margin-bottom: 0.4rem; }
+    .project-name { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--text); margin-bottom: 0.5rem; }
+    .project-desc { font-size: 0.875rem; color: #94a3b8; margin-bottom: 1rem; line-height: 1.65; }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .tag { font-size: 0.7rem; font-weight: 600; padding: 0.2rem 0.55rem; border-radius: 4px; background: var(--tag-bg); color: var(--tag-text); letter-spacing: 0.02em; }
+    .project-status { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.72rem; font-weight: 600; white-space: nowrap; padding: 0.25rem 0.65rem; border-radius: 4px; }
+    .project-status.done { background: rgba(19,136,8,0.1); color: var(--inprog); }
+    .project-status.active { background: rgba(255,153,51,0.1); color: var(--accent); }
+    .project-link { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.8rem; font-weight: 600; color: var(--accent); text-decoration: none; margin-top: 1rem; transition: gap 0.2s; }
+    .project-link:hover { gap: 0.5rem; }
+    #learning { background: var(--surface); }
+    .learning-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; }
+    .learning-card { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; }
+    .learning-platform { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.4rem; }
+    .learning-course { font-size: 0.88rem; font-weight: 500; color: var(--text); line-height: 1.4; }
+    .learning-year { font-size: 0.72rem; color: var(--muted); margin-top: 0.4rem; }
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem; }
+    .skill-group-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent2); margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+    .skill-list { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
+    .skill-list li { font-size: 0.875rem; color: #94a3b8; display: flex; align-items: center; gap: 0.5rem; }
+    .skill-list li::before { content: '→'; color: var(--accent); font-size: 0.75rem; flex-shrink: 0; }
+    #contact { background: var(--surface); text-align: center; }
+    .contact-inner { max-width: 560px; margin: 0 auto; }
+    .contact-links { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-top: 2rem; }
+    footer { text-align: center; padding: 2rem; font-size: 0.8rem; color: var(--muted); border-top: 1px solid var(--border); }
+    @media (max-width: 640px) { nav { padding: 0 1rem; } .nav-links { gap: 1.25rem; } .hero { padding: 5rem 1.25rem 3rem; } section { padding: 3.5rem 1.25rem; } .project-card { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#"><span>C</span>raig M</a>
+  <ul class="nav-links">
+    <li><a href="#certifications">Certs</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#learning">Learning</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section class="hero" id="home">
+  <div class="hero-grid"></div>
+  <div class="hero-inner">
+    <div class="avatar-wrap">
+      <img src="assets/images/headshot.jpeg" alt="Craig M" />
+    </div>
+    <h1>Craig <span>M.</span></h1>
+    <p class="hero-title">Identity and Access Management Professional &nbsp;·&nbsp; Cloud Security &nbsp;·&nbsp; SC-300 In Progress</p>
+    <div class="status-pill">
+      <span class="status-dot"></span>
+      Actively seeking IAM / Cloud Security roles
+    </div>
+    <p class="hero-desc">Building enterprise-grade IAM environments from the ground up — hybrid identity architectures, access governance, security policy, and compliance frameworks. Every project here is hands-on, documented to production standards, and built to solve real business problems.</p>
+    <div class="hero-ctas">
+      <a class="btn btn-primary" href="https://github.com/cama17" target="_blank" rel="noopener">View GitHub →</a>
+      <a class="btn btn-ghost" href="https://www.linkedin.com/in/mcguinnesscraig/" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<section id="certifications">
+  <div class="section-inner">
+    <p class="section-label">Credentials</p>
+    <h2 class="section-title">Industry Certifications</h2>
+    <p class="section-sub">Vendor-issued and third-party certifications validating IAM, cloud, and security foundations.</p>
+    <div class="cert-grid">
+      <div class="cert-card gold">
+        <p class="cert-issuer">Identity Management Institute</p>
+        <p class="cert-name">Certified Access Management Specialist (CAMS)</p>
+        <p class="cert-meta">Issued December 2025 &nbsp;·&nbsp; Cert #159314 &nbsp;·&nbsp; Expires December 2026</p>
+        <a href="assets/images/cams.pdf" target="_blank" rel="noopener" class="cert-badge earned" style="text-decoration:none;">✓ View Certificate</a>
+      </div>
+      <div class="cert-card blue">
+        <p class="cert-issuer">Microsoft</p>
+        <p class="cert-name">SC-900: Security, Compliance &amp; Identity Fundamentals</p>
+        <p class="cert-meta">Issued 2025</p>
+        <a href="https://learn.microsoft.com/en-us/users/craigmcguinness-9708/credentials/e37a69c13b4fb0ac" target="_blank" rel="noopener" class="cert-badge earned" style="text-decoration:none;">✓ Verify</a>
+      </div>
+      <div class="cert-card cyan">
+        <p class="cert-issuer">Amazon Web Services</p>
+        <p class="cert-name">AWS Certified Cloud Practitioner</p>
+        <p class="cert-meta">Issued 2025</p>
+        <a href="https://www.credly.com/badges/6675e6fa-c1aa-4209-97b2-391494a6b77f/public_url" target="_blank" rel="noopener" class="cert-badge earned" style="text-decoration:none;">✓ Verify on Credly</a>
+      </div>
+      <div class="cert-card green">
+        <p class="cert-issuer">Microsoft</p>
+        <p class="cert-name">SC-300: Identity &amp; Access Administrator Associate</p>
+        <p class="cert-meta">In Progress — 2025/2026</p>
+        <span class="cert-badge inprog">▸ In Progress</span>
+      </div>
+      <div class="cert-card green">
+        <p class="cert-issuer">Microsoft</p>
+        <p class="cert-name">SC-500: Cloud and AI Security Engineer Associate</p>
+        <p class="cert-meta">Planned — 2026 &nbsp;·&nbsp; Replaces AZ-500 (retiring Aug 31, 2026)</p>
+        <p class="cert-meta" style="font-size:0.75rem;color:#475569;">Covers cloud infrastructure security, AI workload protection, prompt injection defense, AI governance, and securing Azure OpenAI and Microsoft Copilot deployments.</p>
+        <span class="cert-badge inprog">▸ Planned</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<section id="projects">
+  <div class="section-inner">
+    <p class="section-label">Hands-On Work</p>
+    <h2 class="section-title">Portfolio Projects</h2>
+    <p class="section-sub">Enterprise-focused IAM labs built from scratch. Each project targets real-world scenarios, not tutorials.</p>
+    <div class="project-list">
+
+      <div class="project-card">
+        <div>
+          <p class="project-num">PROJECT 01</p>
+          <p class="project-name">Enterprise SSO with Security Monitoring</p>
+          <p class="project-desc">Implemented and secured Single Sign-On for enterprise applications using Microsoft Entra ID and Conditional Access policies, with automated threat detection and alerting integrated into the access flow.</p>
+          <div class="tag-row"><span class="tag">Entra ID</span><span class="tag">Conditional Access</span><span class="tag">SSO</span><span class="tag">Zendesk</span></div>
+          <a class="project-link" href="https://github.com/cama17/azure-iam-portfolio/tree/main/Projects/01-enterprise-sso" target="_blank" rel="noopener">View documentation →</a>
+        </div>
+        <span class="project-status done">✓ Complete</span>
+      </div>
+
+      <div class="project-card">
+        <div>
+          <p class="project-num">PROJECT 02</p>
+          <p class="project-name">Okta SSO with Zendesk — SAML 2.0</p>
+          <p class="project-desc">Configured SAML 2.0 Single Sign-On between Okta as the Identity Provider and Zendesk as the Service Provider. Covered SP-initiated and IdP-initiated flows, user assignment, and end-to-end verification.</p>
+          <div class="tag-row"><span class="tag">Okta</span><span class="tag">SAML 2.0</span><span class="tag">Zendesk</span><span class="tag">IdP</span></div>
+          <a class="project-link" href="https://github.com/cama17/azure-iam-portfolio/tree/main/Projects/02-okta-sso" target="_blank" rel="noopener">View documentation →</a>
+        </div>
+        <span class="project-status done">✓ Complete</span>
+      </div>
+
+      <div class="project-card">
+        <div>
+          <p class="project-num">PROJECT 03</p>
+          <p class="project-name">Zendesk SCIM Provisioning via Microsoft Entra ID</p>
+          <p class="project-desc">Implemented automated user provisioning and deprovisioning between Microsoft Entra ID and Zendesk using the SCIM 2.0 protocol. Eliminated manual account creation and reduced identity lifecycle risk.</p>
+          <div class="tag-row"><span class="tag">SCIM 2.0</span><span class="tag">Entra ID</span><span class="tag">Provisioning</span><span class="tag">ILM</span></div>
+          <a class="project-link" href="https://github.com/cama17/azure-iam-portfolio/tree/main/Projects/03-zendesk-provisioning" target="_blank" rel="noopener">View documentation →</a>
+        </div>
+        <span class="project-status done">✓ Complete</span>
+      </div>
+
+      <div class="project-card">
+        <div>
+          <p class="project-num">PROJECT 04</p>
+          <p class="project-name">Okta SCIM Provisioning with Zendesk</p>
+          <p class="project-desc">Configured automated identity lifecycle management between Okta and Zendesk via SCIM. Included a full investigation into email identity anchoring and SCIM read-only restrictions — edge cases that surface in real enterprise deployments.</p>
+          <div class="tag-row"><span class="tag">Okta</span><span class="tag">SCIM</span><span class="tag">Zendesk</span><span class="tag">API</span></div>
+          <a class="project-link" href="https://github.com/cama17/azure-iam-portfolio/tree/main/Projects/04-okta-provisioning" target="_blank" rel="noopener">View documentation →</a>
+        </div>
+        <span class="project-status done">✓ Complete</span>
+      </div>
+
+      <div class="project-card">
+        <div>
+          <p class="project-num">PROJECT 05</p>
+          <p class="project-name">Stark Enterprise — Active Directory Lab</p>
+          <p class="project-desc">Designed and deployed a production-ready on-premises Active Directory environment on Windows Server 2022. Includes 15 users across 6 departments, structured OUs, DNS configuration, and GPO design — built as the on-premises foundation for hybrid identity.</p>
+          <div class="tag-row"><span class="tag">Active Directory</span><span class="tag">Windows Server 2022</span><span class="tag">DNS</span><span class="tag">GPO</span><span class="tag">PowerShell</span></div>
+          <a class="project-link" href="https://github.com/cama17/azure-iam-portfolio/tree/main/Projects/05-stark-enterprise-ad" target="_blank" rel="noopener">View documentation →</a>
+        </div>
+        <span class="project-status done">✓ Complete</span>
+      </div>
+
+      <div class="project-card">
+        <div>
+          <p class="project-num">PROJECT 06</p>
+          <p class="project-name">Stark Enterprise — Entra ID Lab (SC-300 Edition)</p>
+          <p class="project-desc">Extends the on-premises AD environment into a full hybrid identity architecture using Microsoft Entra ID P2. Covers Conditional Access, Privileged Identity Management, SCIM provisioning, SAML SSO, identity governance, and JML workflows — mapped to SC-300 exam objectives across 18 phases.</p>
+          <div class="tag-row"><span class="tag">Entra ID P2</span><span class="tag">PIM</span><span class="tag">Conditional Access</span><span class="tag">Hybrid Identity</span><span class="tag">SC-300</span></div>
+          <a class="project-link" href="https://github.com/cama17/azure-iam-portfolio/tree/main/Projects/06-stark-enterprise-entra" target="_blank" rel="noopener">View documentation →</a>
+        </div>
+        <span class="project-status active">▸ In Progress</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<section id="learning">
+  <div class="section-inner">
+    <p class="section-label">Continuous Development</p>
+    <h2 class="section-title">Learning &amp; Courses</h2>
+    <p class="section-sub">Structured courses and training completed alongside hands-on lab work.</p>
+    <div class="learning-grid">
+      <div class="learning-card"><p class="learning-platform">TryHackMe</p><p class="learning-course">SOC Level 1</p><p class="learning-year">2025</p></div>
+      <div class="learning-card"><p class="learning-platform">Austin Community College</p><p class="learning-course">CompTIA Security+ Prep</p><p class="learning-year">2025</p></div>
+      <div class="learning-card"><p class="learning-platform">DataCamp</p><p class="learning-course">Introduction to Python</p><p class="learning-year">2025</p></div>
+      <div class="learning-card"><p class="learning-platform">Udemy</p><p class="learning-course">SQL Bootcamp</p><p class="learning-year">2022</p></div>
+      <div class="learning-card"><p class="learning-platform">DataCamp × TikTok</p><p class="learning-course">Data Analysis Program</p><p class="learning-year">2022</p></div>
+      <div class="learning-card"><p class="learning-platform">Microsoft Learn</p><p class="learning-course">SC-300 Exam Preparation</p><p class="learning-year">2025 – Present</p></div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<section id="skills">
+  <div class="section-inner">
+    <p class="section-label">Technical Competencies</p>
+    <h2 class="section-title">Skills</h2>
+    <p class="section-sub">Capabilities built through hands-on lab work, not just coursework.</p>
+    <div class="skills-grid">
+      <div class="skill-group">
+        <p class="skill-group-title">Identity &amp; Access Management</p>
+        <ul class="skill-list">
+          <li>Microsoft Entra ID (Azure AD)</li>
+          <li>Active Directory DS &amp; Administration</li>
+          <li>Hybrid Identity — Entra Connect</li>
+          <li>Single Sign-On (SAML 2.0, OIDC)</li>
+          <li>SCIM 2.0 Provisioning</li>
+          <li>Privileged Identity Management (PIM)</li>
+          <li>Identity Lifecycle Management (JML)</li>
+          <li>Conditional Access Policy Design</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <p class="skill-group-title">Security &amp; Governance</p>
+        <ul class="skill-list">
+          <li>SOC 2 Type I Readiness</li>
+          <li>NIST Cybersecurity Framework</li>
+          <li>PCI-DSS Scoping</li>
+          <li>Access Control Policy Design</li>
+          <li>Incident Response Planning</li>
+          <li>Data Classification</li>
+          <li>Vendor Risk Assessment</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <p class="skill-group-title">Platforms &amp; Tools</p>
+        <ul class="skill-list">
+          <li>Okta (SSO + SCIM)</li>
+          <li>Zendesk (Enterprise)</li>
+          <li>Microsoft 365 Admin Center</li>
+          <li>AWS (Cloud Practitioner level)</li>
+          <li>GitHub / Git</li>
+          <li>PowerShell (learning)</li>
+          <li>Microsoft Graph API</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<section id="contact">
+  <div class="section-inner contact-inner">
+    <p class="section-label">Get In Touch</p>
+    <h2 class="section-title">Open to Opportunities</h2>
+    <p class="section-sub" style="margin:0 auto 0;">Targeting IAM Analyst, IAM Engineer, Systems Administrator, and Cloud Security roles. Available for full-time positions.</p>
+    <div class="contact-links">
+      <a class="btn btn-primary" href="https://www.linkedin.com/in/mcguinnesscraig/" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="btn btn-ghost" href="https://github.com/cama17" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Craig M &nbsp;·&nbsp; IAM &amp; Cloud Security Professional &nbsp;·&nbsp; Built on GitHub Pages</p>
+</footer>
+
+</body>
+</html>
